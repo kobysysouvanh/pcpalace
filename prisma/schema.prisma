@@ -12,9 +12,68 @@ datasource db {
 }
 
 model Store {
-  id          String    @id @default(uuid())
+  id          String      @id @default(uuid())
   name        String
   userId      String
+  products    Product[]   @relation("StoreToProduct")
+  orders      Order[]     @relation("StoreToOrder")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+
+
+
+model Product {
+  id            String        @id @default(uuid())
+  storeId       String
+  categoryId    String
+  store         Store         @relation("StoreToProduct", fields: [storeId], references: [id])
+  orderItems    OrderItem[]
+  name          String
+  description   String
+  price         Decimal
+  isArchived    Boolean       @default(false)
+  images        Image[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+
+  @@index([storeId])
+}
+
+model Image {
+  id          String    @id @default(uuid())
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url         String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([productId])
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  storeId       String
+  store         Store         @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems    OrderItem[]
+  isPaid        Boolean       @default(false)
+  phone         String        @default("")
+  address       String        @default("")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id            String        @id @default(uuid())
+  orderId       String
+  order         Order         @relation(fields: [orderId], references: [id])
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
 }

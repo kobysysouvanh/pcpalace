@@ -18,11 +18,6 @@ const RoutesNav = ({
       active: pathname === `/store/${params.storeId}`,
     },
     {
-      href: `/store/${params.storeId}/categories`,
-      label: "Categories",
-      active: pathname === `/store/${params.storeId}/categories`,
-    },
-    {
       href: `/store/${params.storeId}/products`,
       label: "Products",
       active: pathname === `/store/${params.storeId}/products`,

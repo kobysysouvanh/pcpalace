@@ -9,10 +9,11 @@ import { User } from "@clerk/nextjs/server";
 import { useRouter } from "next/navigation"
 
 interface MainNavProps {
-  user?: User
+  userImage?: string
+  loggedIn?: boolean
 }
 
-const MainNav: React.FC<MainNavProps> = ({ user }) => {
+const MainNav: React.FC<MainNavProps> = ({ userImage, loggedIn }) => {
   const router = useRouter()
   const { signOut } = useClerk()
 
@@ -24,7 +25,7 @@ const MainNav: React.FC<MainNavProps> = ({ user }) => {
         <Popover>
           <PopoverTrigger>
             <Image
-              src={user?.imageUrl || "/placeholder.png"}
+              src={userImage || "/placeholder.png"}
               width={40}
               height={40}
               className="rounded-full"
@@ -32,7 +33,7 @@ const MainNav: React.FC<MainNavProps> = ({ user }) => {
             />
           </PopoverTrigger>
           <PopoverContent className="p-0">
-            {!user ? (
+            {!loggedIn ? (
               <div>
                 <div
                   className="hover:bg-gray-100 hover:cursor-pointer p-3 rounded-t-md"
