@@ -1,27 +1,46 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import { auth, useClerk } from "@clerk/nextjs";
+import { auth, currentUser, useClerk } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { ShoppingBag } from "lucide-react";
+import useCart from "@/hooks/use-cart";
+import Cart from "./Cart";
 
 interface MainNavProps {
-  userImage?: string
-  loggedIn?: boolean
+  userImage?: string;
 }
 
-const MainNav: React.FC<MainNavProps> = ({ userImage, loggedIn }) => {
-  const router = useRouter()
-  const { signOut } = useClerk()
+const MainNav: React.FC<MainNavProps> = ({ userImage }) => {
+  const { signOut } = useClerk();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="w-full flex items-center h-16 p-4 border-b">
-      <Image src="/logo.png" width={40} height={40} alt="logo" />
-      <h1 className="text-3xl font-bold ml-2">PC Palace</h1>
-      <div className="ml-auto">
+      <Link href="/" className="flex">
+        <Image src="/logo.png" width={40} height={40} alt="logo" />
+        <h1 className="text-3xl font-bold px-2">PC Palace</h1>
+      </Link>
+      <div className="ml-auto flex items-center justify-center space-x-2">
+        {!pathname.includes("/store") && <Cart />}
         <Popover>
           <PopoverTrigger>
             <Image
@@ -33,7 +52,7 @@ const MainNav: React.FC<MainNavProps> = ({ userImage, loggedIn }) => {
             />
           </PopoverTrigger>
           <PopoverContent className="p-0">
-            {!loggedIn ? (
+            {!userImage ? (
               <div>
                 <div
                   className="hover:bg-gray-100 hover:cursor-pointer p-3 rounded-t-md"
@@ -56,10 +75,6 @@ const MainNav: React.FC<MainNavProps> = ({ userImage, loggedIn }) => {
                   onClick={() => router.push("/store")}
                 >
                   My Store
-                </div>
-                <Separator />
-                <div className="hover:bg-gray-100 hover:cursor-pointer p-3 rounded-b-md">
-                  Orders
                 </div>
                 <Separator />
                 <div

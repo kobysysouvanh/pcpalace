@@ -1,3 +1,5 @@
+import OrderClient from '@/components/Orders/OrderClient'
+import { OrderColumn } from '@/components/Orders/OrderColumn'
 import prismadb from '@/lib/prismadb'
 import { formatter } from '@/lib/utils'
 import { format } from "date-fns"
@@ -23,10 +25,11 @@ const OrdersPage = async ({
     }
   })
 
-  const formattedOrders: Order = orders.map((order) => ({
+  const formattedOrders: OrderColumn[] = orders.map((order) => ({
     id: order.id,
     phone: order.phone,
     address: order.address,
+    isPaid: order.isPaid,
     products: order.orderItems.map((orderItem) => orderItem.product.name).join(", "),
     totalPrice: formatter.format(order.orderItems.reduce((total, order) => {
       return total + Number(order.product.price)
@@ -36,7 +39,11 @@ const OrdersPage = async ({
 
 
   return (
-    <div>OrdersPage</div>
+    <div className='flex-col'>
+      <div className='flex-1 space-y-4 p-8 pt-6'>
+        <OrderClient data={formattedOrders}/>
+      </div>
+    </div>
   )
 }
 

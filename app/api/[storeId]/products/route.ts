@@ -80,6 +80,7 @@ export async function GET(
   try {
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId") || undefined;
+    
 
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });

@@ -15,18 +15,13 @@ const AdminNavbar: React.FC<AdminNavbarProps> = ({ store }) => {
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4">
-        <Link href="/" className="flex items-center">
           <div className="flex items-center justify-center">
-            <Button>
+            <Button className="cursor-default">
               <StoreIcon className="mr-2"/>
               {store.name}
             </Button>
           </div>
-        </Link>
         <RoutesNav />
-        <div className="ml-auto flex items-center space-x-4">
-          <UserButton afterSignOutUrl="/" />
-        </div>
       </div>
     </div>
   );
