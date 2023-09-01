@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# PC Palace 
+A e-commerce store that is computer hardware themed. Customers can create an account and sell their goods as well as buy goods from other individuals. Fully kitted with an admin dashboard for sellers to view/add/update/delete products.
+
+# Technologies
+* Next.js 13
+* React
+* Planetscale
+* Prisma
+* Clerk Authentication
+* Tailwind CSS
+
+
 ## Getting Started
 
 First, run the development server:
